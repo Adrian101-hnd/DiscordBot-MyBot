@@ -2,11 +2,18 @@ import discord
 import asyncio
 from discord.ext import commands,tasks
 import os
+from dotenv import load_dotenv
 from cogs.helper_cog import helper_cog
-#Hay un problema con el load dotenv, no se que es lo veo mañana
+from cogs.steam_cog import steam_cog
+import importlib
+
+
+load_dotenv()
+
 
 async def setup_cogs(bot):
     await bot.add_cog(helper_cog(bot))
+    await bot.add_cog(steam_cog(bot))
     print("Done setting cogs")
 
 async def main():
@@ -15,6 +22,6 @@ async def main():
     bot = commands.Bot(command_prefix="h#",intents = intents)
     await setup_cogs(bot)
     print("Bot succesfuly deployed!")
-    await bot.start("")
-
+    await bot.start(os.environ.get("BOT_KEY"))
+    
 asyncio.run(main())
